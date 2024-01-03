@@ -1,0 +1,68 @@
+name: CI/CD Pipeline
+
+on:
+    push:
+        branches:
+            - main
+    workflow_dispatch:
+
+jobs:
+    test_and_notify:
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Checkout Repository
+              uses: actions/checkout@v2
+
+            - name: Set up Node.js
+              uses: actions/setup-node@v4
+              with:
+                  node-version: 20.8.0
+
+            - name: Install Dependencies and Run Tests
+              working-directory: api
+              run: |
+                npm install
+                npm run create-env
+                npm run test
+
+            - name: Send Email on Success
+              if: success()
+              uses: dawidd6/action-send-mail@v2
+              with:
+                server_address: smtp.gmail.com
+                server_port: 465
+                username: ${{secrets.MAIL_USERNAME}}
+                password: ${{secrets.MAIL_PASSWORD}}
+                subject: 🎉 New push passed the test 🎉
+                body: "Hi there,
+
+                  Great job! Your new push passed the test. 👏✅
+
+                  See the test report here: https://github.com/Ayope/Syndic-app
+
+                  Happy coding! 😊"
+                to: ayoubelayouk1@gmail.com
+                from: ${{secrets.MAIL_USERNAME}}
+        
+                
+            - name: Send Email on Failure
+              if: failure()
+              uses: dawidd6/action-send-mail@v2
+              with:
+                server_address: smtp.gmail.com
+                server_port: 465
+                username: ${{secrets.MAIL_USERNAME}}
+                password: ${{secrets.MAIL_PASSWORD}}
+                subject: 😢 New push failed the test 😢
+                body: "Hi there,
+
+                  Sorry, your new push failed the test. 😔
+
+                  See the test report here: https://github.com/Ayope/Syndic-app
+
+                  Go fix it.💻"
+                to: ayoubelayouk1@gmail.com
+                from: ${{secrets.MAIL_USERNAME}}
+        
+        

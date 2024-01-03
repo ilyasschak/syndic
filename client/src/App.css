@@ -1,0 +1,177 @@
+body {
+    margin: 0;
+}
+
+.center{
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.field{
+    display: flex;
+    flex-direction: column;
+}
+
+.loginForm{
+    height: 100vh;
+    row-gap: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.success-message {
+    border: 2px solid green;
+    background-color: lightgreen;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+.error-message{
+    border: 2px solid red;
+    background-color: lightcoral;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+
+main {
+    margin: 16px;
+}
+
+.navbar {
+    display: flex;
+    align-items: center;
+    background: black;
+    color: white;
+    font-family: Helvetica;
+    font-weight: 300;
+}
+
+.navbar__title {
+    margin-right: auto;
+    font-size: 150%;
+    padding: 12px 16px;
+}
+
+.navbar__item {
+    padding: 16px 16px;
+    cursor: pointer;
+    vertical-align: middle;
+}
+
+.logout_button{
+    margin: 16px 16px;
+    background-color: #FFFFFF;
+    border: 1px solid rgb(209,213,219);
+    border-radius: .5rem;
+    box-sizing: border-box;
+    color: #111827;
+    font-family: "Inter var",ui-sans-serif,system-ui,-apple-system,system-ui,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
+    font-size: .875rem;
+    font-weight: 600;
+    line-height: 1.25rem;
+    padding: .75rem 1rem;
+    text-align: center;
+    text-decoration: none #D1D5DB solid;
+    text-decoration-thickness: auto;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    cursor: pointer;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+}
+
+.logout_button:hover {
+  background-color: rgb(249,250,251);
+}
+
+.logout_button:focus {
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+}
+
+.button-39:focus-visible {
+  box-shadow: none;
+}
+
+.loginLinks{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.loginLinks a {
+    text-decoration: none;
+    font-weight: 100px;
+    color: black;
+}
+
+.container{
+  width: 360px;
+  padding: 4% 0 4%;
+  margin: auto;
+  
+}
+
+.form {
+  position: relative;
+  z-index: 1;
+  background: #FFFFFF;
+  max-width: 360px;
+  margin: auto ;
+  text-align: center;
+  border-radius: 2rem;
+}
+
+.form input, .form select {
+  outline: 0;
+  background: #f2f2f2;
+  width: 100%;
+  border: 0;
+  margin: 0 0 15px;
+  padding: 15px;
+  box-sizing: border-box;
+  font-size: 14px;
+}
+
+
+.form button {
+  text-transform: uppercase;
+  outline: 0;
+  background: #696969;
+  width: 100%;
+  border: 0;
+  padding: 15px;
+  color: #FFFFFF;
+  font-size: 14px;
+  -webkit-transition: all 0.3 ease;
+  transition: all 0.3 ease;
+  cursor: pointer;
+}
+
+.form button:hover,
+.form button:active,
+.form button:focus {
+  background: #595959;
+  transition: 0.5s;
+}
+.form .message {
+  margin: 15px 0 0;
+  color: #b3b3b3;
+  font-size: 12px;
+}
+.form .message a {
+  color: #696969;
+  text-decoration: none;
+}
+
+.form label {
+    text-align: left;
+    margin-bottom: 10px;
+    font-weight: lighter;
+}

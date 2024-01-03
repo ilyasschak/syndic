@@ -1,0 +1,31 @@
+version: '"3.8'
+
+services:
+  server:
+    build:
+      context: ./api
+      dockerfile: Dockerfile
+    image: express-api-app
+    command: npm start
+    volumes:
+      - ./api:/usr/src/app
+      - /usr/src/app/node_modules
+    ports:
+      - "5000:5000"
+
+  client:
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    command: npm run dev
+    image: react-app
+    stdin_open : true
+    volumes:
+      - ./client:/usr/src/app
+      - /usr/src/app/node_modules
+    ports:
+      - "5173:5173"
+
+volumes:
+  server: {}
+  client: {}

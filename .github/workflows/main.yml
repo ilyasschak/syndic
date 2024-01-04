@@ -1,53 +1,62 @@
-name: Build and Deploy to ECS
+name: Build and Deploy to ECR
 
 on:
   push:
-    branches:
-      - main
+    branches: [main]  # Trigger the workflow on push events to the main branch
 
 jobs:
-  build-and-deploy-backend:
+  build-and-push-backend:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
-      - name: Set up Docker
-        uses: docker/setup-docker@v2
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
         with:
-          dockerfile: api/Dockerfile  # Adjust the path to your backend Dockerfile
-          context: .
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
 
-      - name: Build and push Docker image for backend
-        env:
-          AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
-          AWS_REGION: us-east-1
-          ECR_REPO: backend
+      - name: Build backend image
+        working-directory: api
         run: |
-          echo ${{ secrets.AWS_ACCESS_KEY_ID }} | docker login --username AWS --password-stdin $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com
-          docker build -t $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$ECR_REPO:$GITHUB_SHA api/
-          docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$ECR_REPO:$GITHUB_SHA
+          docker build -t backend-image .
 
-  build-and-deploy-frontend:
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+
+      - name: Push backend image to ECR
+        run: |
+          docker tag backend-image:latest 569667774725.dkr.ecr.us-east-1.amazonaws.com/backend:latest
+          docker push 569667774725.dkr.ecr.us-east-1.amazonaws.com/backend:latest
+
+  build-and-push-frontend:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
-      - name: Set up Docker
-        uses: docker/setup-docker@v2
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
         with:
-          dockerfile: client/Dockerfile  # Adjust the path to your frontend Dockerfile
-          context: .
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
 
-      - name: Build and push Docker image for frontend
-        env:
-          AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
-          AWS_REGION: us-east-1
-          ECR_REPO: frontend
+      - name: Build frontend image
+        working-directory: client
         run: |
-          echo ${{ secrets.AWS_ACCESS_KEY_ID }} | docker login --username AWS --password-stdin $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com
-          docker build -t $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$ECR_REPO:$GITHUB_SHA client/
-          docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$ECR_REPO:$GITHUB_SHA
+          docker build -t frontend-image .
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+
+      - name: Push frontend image to ECR
+        run: |
+          docker tag frontend-image:latest 569667774725.dkr.ecr.us-east-1.amazonaws.com/frontend:latest
+          docker push 569667774725.dkr.ecr.us-east-1.amazonaws.com/frontend:latest

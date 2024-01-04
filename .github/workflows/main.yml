@@ -27,7 +27,8 @@ jobs:
       - name: Login to Amazon ECR
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
-
+        with:
+          mask-password: true
       - name: Push backend image to ECR
         run: |
           docker tag backend-image:latest 569667774725.dkr.ecr.us-east-1.amazonaws.com/backend:latest
@@ -55,7 +56,8 @@ jobs:
       - name: Login to Amazon ECR
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
-
+        with:
+          mask-password: true
       - name: Push frontend image to ECR
         run: |
           docker tag frontend-image:latest 569667774725.dkr.ecr.us-east-1.amazonaws.com/frontend:latest

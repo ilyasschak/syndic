@@ -2,7 +2,7 @@ name: Build and Deploy to ECR
 
 on:
   push:
-    branches: [main]  # Trigger the workflow on push events to the main branch
+    branches: main  # Trigger the workflow on push events to the main branch
 
 jobs:
   build-and-push-backend:
@@ -40,5 +40,3 @@ jobs:
           docker tag backend-image:latest 569667774725.dkr.ecr.us-east-1.amazonaws.com/backend:${TAG_DATE}
           docker push 569667774725.dkr.ecr.us-east-1.amazonaws.com/backend:${TAG_DATE}
 
-  build-and-push-frontend:
-    # ... (similar steps with date-based tagging for frontend)

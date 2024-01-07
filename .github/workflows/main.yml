@@ -43,7 +43,10 @@ jobs:
         run: |
           docker tag backend-image:latest 569667774725.dkr.ecr.us-east-1.amazonaws.com/backend:${TAG_DATE}-${GITHUB_RUN_NUMBER}
           docker push 569667774725.dkr.ecr.us-east-1.amazonaws.com/backend:${TAG_DATE}-${GITHUB_RUN_NUMBER}
-
+          
+      - name: Deploy to ECS with task
+        run: |
+          aws ecs update-service --cluster DemoCluster --service Api-syndicat --force-new-deployment
   build-and-push-frontend:
     runs-on: ubuntu-latest
     if: github.ref_name == 'main' || contains(github.ref_name, 'frontend')

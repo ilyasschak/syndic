@@ -90,7 +90,7 @@ router.post('/add_apartment',verifyToken, ApartmentController.insertApartment);
  *             example:
  *               error: Error message detailing the issue.
  */
-router.get("/",verifyToken, ApartmentController.getAllApartments);
+router.get("/",ApartmentController.getAllApartments);
 
 /**
  * @swagger

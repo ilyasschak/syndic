@@ -12,7 +12,7 @@ import swaggerUi from 'swagger-ui-express'
 import swaggerConfig from './config/swagger.js'
 
 const app = express();
-const port = 5000;
+const port = 5001;
 
 const corsOptions = {
     origin: 'http://localhost:5173', 

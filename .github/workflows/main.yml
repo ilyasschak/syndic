@@ -2,11 +2,15 @@ name: Build and Deploy to ECR
 
 on:
   push:
-    branches: main  # Trigger the workflow on push events to the main branch
+    branches:
+      - '*backend*'
+      - main
+      - '*frontend*'
 
 jobs:
   build-and-push-backend:
     runs-on: ubuntu-latest
+    if: github.ref_name == 'main' || contains(github.ref_name, 'backend')
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -40,3 +44,38 @@ jobs:
           docker tag backend-image:latest 569667774725.dkr.ecr.us-east-1.amazonaws.com/backend:${TAG_DATE}
           docker push 569667774725.dkr.ecr.us-east-1.amazonaws.com/backend:${TAG_DATE}
 
+  build-and-push-frontend:
+    runs-on: ubuntu-latest
+    if: github.ref_name == 'main' || contains(github.ref_name, 'frontend')
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+
+      - name: Build frontend image
+        working-directory: api
+        run: |
+          docker build -t frontend-image .
+
+      - name: Generate date-based tag
+        id: generate-tag
+        run: |
+          today=$(date +"%Y%m%d")
+          echo "TAG_DATE=${today}" >> $GITHUB_ENV
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+        with:
+          mask-password: true
+
+      - name: Push frontend image to ECR
+        run: |
+          docker tag frontend-image:latest 569667774725.dkr.ecr.us-east-1.amazonaws.com/frontend:${TAG_DATE}
+          docker push 569667774725.dkr.ecr.us-east-1.amazonaws.com/frontend:${TAG_DATE}

@@ -39,7 +39,7 @@ jobs:
         with:
           mask-password: true
 
-      - name: Push backend image to ECR
+      - name: Push backend image to ECR 
         run: |
           docker tag backend-image:latest 569667774725.dkr.ecr.us-east-1.amazonaws.com/backend:${TAG_DATE}-${GITHUB_RUN_NUMBER}
           docker push 569667774725.dkr.ecr.us-east-1.amazonaws.com/backend:${TAG_DATE}-${GITHUB_RUN_NUMBER}

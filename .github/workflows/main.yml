@@ -31,8 +31,10 @@ jobs:
           mask-password: true
       - name: Push backend image to ECR
         run: |
-          docker tag backend-image:latest 569667774725.dkr.ecr.us-east-1.amazonaws.com/backend:latest
-          docker push 569667774725.dkr.ecr.us-east-1.amazonaws.com/backend:latest
+          VERSION=$(git describe --tags --abbrev=0)
+          docker build -t my-image:latest .
+          docker tag my-image:latest 569667774725.dkr.ecr.us-east-1.amazonaws.com/frontend:latest
+          docker tag my-image:latest 569667774725.dkr.ecr.us-east-1.amazonaws.com/frontend:$VERSION
 
   build-and-push-frontend:
     runs-on: ubuntu-latest

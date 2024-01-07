@@ -41,8 +41,8 @@ jobs:
 
       - name: Push backend image to ECR
         run: |
-          docker tag backend-image:latest 569667774725.dkr.ecr.us-east-1.amazonaws.com/backend:${TAG_DATE}
-          docker push 569667774725.dkr.ecr.us-east-1.amazonaws.com/backend:${TAG_DATE}
+          docker tag backend-image:latest 569667774725.dkr.ecr.us-east-1.amazonaws.com/backend:${TAG_DATE}+${{ github.sha }}
+          docker push 569667774725.dkr.ecr.us-east-1.amazonaws.com/backend:${TAG_DATE}+${{ github.sha }}
 
   build-and-push-frontend:
     runs-on: ubuntu-latest
@@ -77,5 +77,6 @@ jobs:
 
       - name: Push frontend image to ECR
         run: |
-          docker tag frontend-image:latest 569667774725.dkr.ecr.us-east-1.amazonaws.com/frontend:${TAG_DATE}
-          docker push 569667774725.dkr.ecr.us-east-1.amazonaws.com/frontend:${TAG_DATE}
+          docker tag frontend-image:latest 569667774725.dkr.ecr.us-east-1.amazonaws.com/frontend:${TAG_DATE}+${{ github.sha }}
+          docker push 569667774725.dkr.ecr.us-east-1.amazonaws.com/frontend:${TAG_DATE}+${{ github.sha }}
+
